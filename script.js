@@ -325,8 +325,104 @@ generatePdfBtn.addEventListener("click", () => {
   const cabin = document.getElementById("cabin").value;
   const baggage = document.getElementById("baggage").value || "—";
   const notes = document.getElementById("notes").value || "—";
+  const carrier = (document.getElementById("carrier")?.value || "").trim();
 
   const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "mm", "a4");
+
+  // Build rows once
+  const paxRows = passengers.map((p, i) => ([
+    String(i + 1),
+    `${p.title} ${p.fullName}`,
+    p.nationality || "—",
+    p.passport || "—"
+  ]));
+
+  const segRows = segments.map((s, i) => ([
+    String(i + 1),
+    `${s.from} → ${s.to}`,
+    fmtDate(s.date),
+    s.flightNo || "—",
+    `${s.departTime || "—"}–${s.arriveTime || "—"}`
+  ]));
+
+  // Always 2 pages: first 4 segments on page 1
+  const firstPart = segRows.slice(0, 4);
+  const secondPart = segRows.slice(4);
+
+  // ================= PAGE 1 =================
+  drawHeader(doc, carrier);
+
+  doc.setFontSize(11);
+  doc.text("PASSENGER INFORMATION", 14, 32);
+
+  doc.autoTable({
+    startY: 36,
+    head: [["#", "FULL NAME", "NATIONALITY", "PASSPORT (opt)"]],
+    body: paxRows,
+    styles: { fontSize: 9, cellPadding: 2.2 },
+    headStyles: { fillColor: [20, 20, 20] },
+    alternateRowStyles: { fillColor: [245, 245, 245] },
+    margin: { left: 14, right: 14 },
+    theme: "striped"
+  });
+
+  let y = doc.lastAutoTable.finalY + 10;
+  doc.setFontSize(11);
+  doc.text("TRIP SEGMENTS (PART 1)", 14, y);
+
+  doc.autoTable({
+    startY: y + 4,
+    head: [["#", "ROUTE", "DATE", "FLIGHT", "TIME"]],
+    body: firstPart.length ? firstPart : [["—", "—", "—", "—", "—"]],
+    styles: { fontSize: 9, cellPadding: 2.2 },
+    headStyles: { fillColor: [20, 20, 20] },
+    alternateRowStyles: { fillColor: [245, 245, 245] },
+    margin: { left: 14, right: 14 },
+    theme: "striped"
+  });
+
+  // ================= PAGE 2 =================
+  doc.addPage();
+  drawHeader(doc, carrier);
+
+  doc.setFontSize(11);
+  doc.text("TRIP SEGMENTS (PART 2)", 14, 32);
+
+  doc.autoTable({
+    startY: 36,
+    head: [["#", "ROUTE", "DATE", "FLIGHT", "TIME"]],
+    body: secondPart.length ? secondPart : [["—", "—", "—", "—", "—"]],
+    styles: { fontSize: 9, cellPadding: 2.2 },
+    headStyles: { fillColor: [20, 20, 20] },
+    alternateRowStyles: { fillColor: [245, 245, 245] },
+    margin: { left: 14, right: 14 },
+    theme: "striped"
+  });
+
+  let y2 = doc.lastAutoTable.finalY + 10;
+  doc.setFontSize(11);
+  doc.text("SUMMARY", 14, y2);
+
+  y2 += 6;
+  doc.setFontSize(10);
+  doc.text(`Cabin: ${cabin}`, 14, y2); y2 += 6;
+  doc.text(`Baggage: ${baggage}`, 14, y2); y2 += 6;
+
+  doc.setFontSize(10);
+  doc.text("Notes:", 14, y2); y2 += 5;
+  doc.setFontSize(9);
+  doc.text(String(notes), 14, y2, { maxWidth: 180 });
+
+  // Footer on all pages
+  const totalPages = doc.getNumberOfPages();
+  for (let p = 1; p <= totalPages; p++) {
+    doc.setPage(p);
+    drawFooter(doc, p, totalPages);
+  }
+
+  doc.save("itinerary-summary.pdf");
+});
   const doc = new jsPDF("p", "mm", "a4");
 
   // ---------- PAGE 1 ----------
