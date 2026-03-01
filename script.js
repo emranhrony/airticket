@@ -1,15 +1,13 @@
 const PASSENGER_MAX = 5;
-const SEGMENT_MAX = 8;
-
-const airports = ["DAC","BKK","SIN","DXB","KUL","DEL","DOH","LHR","SYD"];
+const SEGMENT_MAX = 6;
 
 const passengerBox = document.getElementById("passengerBox");
 const segmentBox = document.getElementById("segmentBox");
 
 let passengers = [{title:"MR", name:"", nationality:"Bangladesh"}];
-let segments = [
-  {from:"DAC", to:"BKK", date:"", flight:"", dep:"10:00", arr:"13:00"}
-];
+let segments = [{from:"DAC", to:"BKK", date:"", flight:"", dep:"10:00", arr:"13:00"}];
+
+const airports = ["DAC","BKK","SIN","DXB","KUL","DEL","DOH","LHR"];
 
 function renderPassengers(){
   passengerBox.innerHTML="";
@@ -22,11 +20,9 @@ function renderPassengers(){
             <option>MRS</option>
             <option>MS</option>
           </select>
-
           <input placeholder="Full Name"
             oninput="passengers[${i}].name=this.value">
         </div>
-
         <input placeholder="Nationality"
           oninput="passengers[${i}].nationality=this.value">
       </div>
@@ -43,53 +39,32 @@ function renderSegments(){
           <select onchange="segments[${i}].from=this.value">
             ${airports.map(a=>`<option>${a}</option>`).join("")}
           </select>
-
           <select onchange="segments[${i}].to=this.value">
             ${airports.map(a=>`<option>${a}</option>`).join("")}
           </select>
         </div>
-
         <div class="row">
           <input type="date" onchange="segments[${i}].date=this.value">
           <input placeholder="Flight No" onchange="segments[${i}].flight=this.value">
-        </div>
-
-        <div class="row">
-          <input type="time" onchange="segments[${i}].dep=this.value">
-          <input type="time" onchange="segments[${i}].arr=this.value">
         </div>
       </div>
     `;
   });
 }
 
-document.getElementById("addPassengerBtn").onclick=()=>{
+document.getElementById("addPassenger").onclick=()=>{
   if(passengers.length>=PASSENGER_MAX) return alert("Max 5 passengers");
   passengers.push({title:"MR", name:"", nationality:"Bangladesh"});
   renderPassengers();
 };
 
-document.getElementById("addSegmentBtn").onclick=()=>{
-  if(segments.length>=SEGMENT_MAX) return alert("Max 8 segments");
-  segments.push({from:"DAC", to:"BKK", date:"", flight:"", dep:"10:00", arr:"13:00"});
+document.getElementById("addSegment").onclick=()=>{
+  if(segments.length>=SEGMENT_MAX) return alert("Max 6 segments for single page");
+  segments.push({from:"DAC", to:"BKK", date:"", flight:""});
   renderSegments();
 };
 
-function header(doc, carrier){
-  doc.setFontSize(14);
-  doc.text("TRAVEL ITINERARY / BOOKING SUMMARY",14,15);
-  doc.setFontSize(10);
-  doc.text(`Carrier: ${carrier||"—"}`,14,22);
-  doc.line(14,25,196,25);
-}
-
-function footer(doc,page,total){
-  doc.setFontSize(9);
-  doc.text(`Page ${page} of ${total}`,196,287,{align:"right"});
-  doc.text("This is a travel itinerary summary document.",14,287);
-}
-
-document.getElementById("generateBtn").onclick=()=>{
+document.getElementById("generate").onclick=()=>{
 
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF("p","mm","a4");
@@ -99,58 +74,58 @@ document.getElementById("generateBtn").onclick=()=>{
   const baggage=document.getElementById("baggage").value;
   const notes=document.getElementById("notes").value;
 
-  const segRows=segments.map((s,i)=>[
-    i+1,
-    `${s.from} → ${s.to}`,
-    s.date,
-    s.flight,
-    `${s.dep}-${s.arr}`
-  ]);
+  // HEADER
+  doc.setFontSize(12);
+  doc.text("VISA A2Z",14,12);
+  doc.setFontSize(15);
+  doc.text("TRAVEL ITINERARY / BOOKING SUMMARY",14,20);
+  doc.setFontSize(9);
+  doc.text("4th Floor, Golden Tower, AmberKhana, Syhet",14,25);
+  doc.text("travelvisaa2z@gmail.com | +8801572631745",14,29);
 
-  const first=segRows.slice(0,4);
-  const second=segRows.slice(4);
+  if(carrier){
+    doc.text(`Carrier: ${carrier}`,150,20);
+  }
 
-  // PAGE 1
-  header(doc,carrier);
+  doc.line(14,32,196,32);
 
+  // PASSENGER TABLE
   doc.autoTable({
-    startY:35,
+    startY:38,
     head:[["#","FULL NAME","NATIONALITY"]],
     body:passengers.map((p,i)=>[
       i+1,
       `${p.title} ${p.name}`,
       p.nationality
-    ])
+    ]),
+    theme:"striped"
   });
 
+  // SEGMENTS
   doc.autoTable({
-    startY:doc.lastAutoTable.finalY+10,
-    head:[["#","ROUTE","DATE","FLIGHT","TIME"]],
-    body:first.length?first:[["-","-","-","-","-"]]
+    startY:doc.lastAutoTable.finalY+8,
+    head:[["#","ROUTE","DATE","FLIGHT"]],
+    body:segments.map((s,i)=>[
+      i+1,
+      `${s.from} → ${s.to}`,
+      s.date,
+      s.flight
+    ]),
+    theme:"striped"
   });
 
-  // PAGE 2
-  doc.addPage();
-  header(doc,carrier);
+  let y=doc.lastAutoTable.finalY+8;
 
-  doc.autoTable({
-    startY:35,
-    head:[["#","ROUTE","DATE","FLIGHT","TIME"]],
-    body:second.length?second:[["-","-","-","-","-"]]
-  });
-
-  let y=doc.lastAutoTable.finalY+10;
-  doc.text(`Cabin: ${cabin}`,14,y); y+=6;
-  doc.text(`Baggage: ${baggage}`,14,y); y+=6;
+  doc.text(`Cabin: ${cabin}`,14,y);
+  y+=6;
+  doc.text(`Baggage: ${baggage}`,14,y);
+  y+=6;
   doc.text(`Notes: ${notes}`,14,y);
 
-  const total=doc.getNumberOfPages();
-  for(let i=1;i<=total;i++){
-    doc.setPage(i);
-    footer(doc,i,total);
-  }
+  doc.setFontSize(8);
+  doc.text("This document is a travel itinerary summary and not a verifiable e-ticket.",14,287);
 
-  doc.save("itinerary.pdf");
+  doc.save("visa-a2z-itinerary.pdf");
 };
 
 renderPassengers();
