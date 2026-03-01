@@ -1,3 +1,28 @@
+function drawHeader(doc, carrierText){
+  const w = doc.internal.pageSize.getWidth();
+  doc.setFontSize(14);
+  doc.text("TRAVEL ITINERARY / BOOKING SUMMARY", 14, 14);
+
+  doc.setFontSize(10);
+  doc.text(carrierText ? `Carrier: ${carrierText}` : "Carrier: —", 14, 20);
+
+  doc.setDrawColor(0);
+  doc.setLineWidth(0.4);
+  doc.line(14, 23, w - 14, 23);
+}
+
+function drawFooter(doc, pageNum, totalPages){
+  const w = doc.internal.pageSize.getWidth();
+  const h = doc.internal.pageSize.getHeight();
+
+  doc.setFontSize(9);
+  doc.text(`Issued: ${new Date().toLocaleDateString()}`, 14, h - 10);
+  doc.text(`Page ${pageNum} of ${totalPages}`, w - 14, h - 10, { align: "right" });
+
+  // small, not watermark
+  doc.setFontSize(8);
+  doc.text("Note: This is an itinerary/summary document and is not a verifiable e-ticket.", 14, h - 6);
+}
 const PASSENGER_MAX = 5;
 const SEGMENT_MAX = 8;
 
