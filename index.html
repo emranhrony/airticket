@@ -3,77 +3,79 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Demo Flight Itinerary (Mock)</title>
+  <title>Itinerary PDF Generator</title>
   <link rel="stylesheet" href="style.css" />
+
+  <!-- PDF libs -->
+  <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+
+  <script defer src="script.js"></script>
 </head>
 <body>
   <header class="wrap">
-    <h1>Demo Flight Itinerary (Mock)</h1>
-    <p class="note">এটি শুধুই ডেমো/স্যাম্পল। বাস্তব টিকিট নয়।</p>
+    <h1>Travel Itinerary PDF Generator</h1>
+    <p class="note">এটি একটি <b>Itinerary / Booking Summary (Sample)</b> PDF তৈরি করে।</p>
   </header>
 
   <main class="wrap grid">
     <section class="card">
-      <h2>Input</h2>
-      <form id="f" class="form">
-        <label>Passenger Name <input name="name" required placeholder="Emran Hussen"></label>
-        <label>From <input name="from" required placeholder="DAC"></label>
-        <label>To <input name="to" required placeholder="DXB"></label>
-        <label>Date <input name="date" type="date" required></label>
-        <label>Flight No <input name="flight" required placeholder="EK 585"></label>
-        <label>PNR (optional) <input name="pnr" placeholder="ABC123"></label>
+      <h2>Passengers (max 5)</h2>
 
-        <div class="btnrow">
-          <button type="submit">Generate</button>
-          <button type="button" id="printBtn">Print / Save PDF</button>
-        </div>
-      </form>
+      <div id="passengers"></div>
+
+      <div class="btnrow">
+        <button type="button" id="addPassengerBtn">+ Add Passenger</button>
+      </div>
+
+      <hr class="sep"/>
+
+      <h2>Trip Segments (Multi-City)</h2>
+      <p class="muted">Round Trip চাইলে 2টা segment দিন (Outbound + Return)।</p>
+
+      <div id="segments"></div>
+
+      <div class="btnrow">
+        <button type="button" id="addSegmentBtn">+ Add Segment</button>
+      </div>
+
+      <hr class="sep"/>
+
+      <h2>Trip Summary</h2>
+      <div class="row">
+        <label>
+          Cabin
+          <select id="cabin">
+            <option>Economy</option>
+            <option>Premium Economy</option>
+            <option>Business</option>
+            <option>First</option>
+          </select>
+        </label>
+
+        <label>
+          Baggage
+          <input id="baggage" placeholder="e.g., 30kg" />
+        </label>
+      </div>
+
+      <label>
+        Notes (optional)
+        <input id="notes" placeholder="Any notes..." />
+      </label>
+
+      <div class="btnrow">
+        <button type="button" id="generatePdfBtn" class="primary">Generate PDF (2 pages)</button>
+      </div>
     </section>
 
     <section class="card">
-      <h2>Preview</h2>
-      <div id="ticket" class="ticket">
-        <div class="ticket-top">
-          <div>
-            <div class="label">Passenger</div>
-            <div class="value" data-k="name">—</div>
-          </div>
-          <div>
-            <div class="label">PNR</div>
-            <div class="value" data-k="pnr">—</div>
-          </div>
-        </div>
-
-        <div class="route">
-          <div class="city">
-            <div class="big" data-k="from">—</div>
-            <div class="small">Departure</div>
-          </div>
-          <div class="arrow">✈</div>
-          <div class="city">
-            <div class="big" data-k="to">—</div>
-            <div class="small">Arrival</div>
-          </div>
-        </div>
-
-        <div class="ticket-bottom">
-          <div>
-            <div class="label">Date</div>
-            <div class="value" data-k="date">—</div>
-          </div>
-          <div>
-            <div class="label">Flight</div>
-            <div class="value" data-k="flight">—</div>
-          </div>
-        </div>
-
-        <div class="disclaimer">
-          MOCK / SAMPLE DOCUMENT — NOT A REAL TICKET
-        </div>
+      <h2>Preview (quick)</h2>
+      <div class="preview" id="previewBox">
+        <div class="preview-title">Preview will appear here</div>
+        <div class="preview-sub">Add passengers & segments, then generate PDF.</div>
       </div>
     </section>
   </main>
-
-  <script src="script.js"></script>
 </body>
 </html>
