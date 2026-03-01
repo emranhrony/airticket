@@ -104,7 +104,7 @@ document.getElementById("generate").onclick=()=>{
   // SEGMENTS
   doc.autoTable({
     startY:doc.lastAutoTable.finalY+8,
-    head:[["#","ROUTE","DATE","FLIGHT"]],
+    head:[["AirLines","ROUTE","DATE","FLIGHT"]],
     body:segments.map((s,i)=>[
       i+1,
       `${s.from} → ${s.to}`,
