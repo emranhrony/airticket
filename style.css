@@ -1,1 +1,27 @@
+:root { font-family: system-ui, sans-serif; }
+body { margin: 0; background:#f6f7fb; color:#111; }
+.wrap { max-width: 980px; margin: 0 auto; padding: 18px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 900px){ .grid { grid-template-columns: 1fr; } }
 
+.note { margin-top: 6px; color:#555; }
+.card { background:#fff; border-radius: 14px; padding: 16px; box-shadow: 0 6px 18px rgba(0,0,0,.06); }
+.form label { display:block; margin: 10px 0; font-size: 14px; }
+.form input { width:100%; padding:10px; margin-top:6px; border:1px solid #ddd; border-radius: 10px; }
+.btnrow { display:flex; gap:10px; margin-top: 12px; flex-wrap: wrap; }
+button { padding:10px 14px; border:0; border-radius: 10px; cursor:pointer; }
+button[type="submit"] { background:#111; color:#fff; }
+#printBtn { background:#e9eefc; }
+
+.ticket { border: 1px dashed #c9c9c9; border-radius: 14px; padding: 14px; background:#fcfcff; }
+.ticket-top, .ticket-bottom { display:flex; justify-content: space-between; gap: 14px; }
+.label { font-size: 12px; color:#666; }
+.value { font-size: 16px; font-weight: 700; }
+
+.route { margin: 18px 0; display:flex; align-items:center; justify-content: space-between; }
+.city { text-align:center; flex:1; }
+.big { font-size: 34px; font-weight: 800; letter-spacing: 1px; }
+.small { font-size: 12px; color:#666; }
+.arrow { width: 60px; text-align:center; font-size: 26px; opacity:.8; }
+
+.disclaimer { margin-top: 14px; font-size: 12px; color:#b00020; font-weight: 700; text-align:center; }
