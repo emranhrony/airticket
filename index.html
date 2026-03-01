@@ -1,1 +1,79 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo Flight Itinerary (Mock)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="wrap">
+    <h1>Demo Flight Itinerary (Mock)</h1>
+    <p class="note">এটি শুধুই ডেমো/স্যাম্পল। বাস্তব টিকিট নয়।</p>
+  </header>
 
+  <main class="wrap grid">
+    <section class="card">
+      <h2>Input</h2>
+      <form id="f" class="form">
+        <label>Passenger Name <input name="name" required placeholder="Emran Hussen"></label>
+        <label>From <input name="from" required placeholder="DAC"></label>
+        <label>To <input name="to" required placeholder="DXB"></label>
+        <label>Date <input name="date" type="date" required></label>
+        <label>Flight No <input name="flight" required placeholder="EK 585"></label>
+        <label>PNR (optional) <input name="pnr" placeholder="ABC123"></label>
+
+        <div class="btnrow">
+          <button type="submit">Generate</button>
+          <button type="button" id="printBtn">Print / Save PDF</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Preview</h2>
+      <div id="ticket" class="ticket">
+        <div class="ticket-top">
+          <div>
+            <div class="label">Passenger</div>
+            <div class="value" data-k="name">—</div>
+          </div>
+          <div>
+            <div class="label">PNR</div>
+            <div class="value" data-k="pnr">—</div>
+          </div>
+        </div>
+
+        <div class="route">
+          <div class="city">
+            <div class="big" data-k="from">—</div>
+            <div class="small">Departure</div>
+          </div>
+          <div class="arrow">✈</div>
+          <div class="city">
+            <div class="big" data-k="to">—</div>
+            <div class="small">Arrival</div>
+          </div>
+        </div>
+
+        <div class="ticket-bottom">
+          <div>
+            <div class="label">Date</div>
+            <div class="value" data-k="date">—</div>
+          </div>
+          <div>
+            <div class="label">Flight</div>
+            <div class="value" data-k="flight">—</div>
+          </div>
+        </div>
+
+        <div class="disclaimer">
+          MOCK / SAMPLE DOCUMENT — NOT A REAL TICKET
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
