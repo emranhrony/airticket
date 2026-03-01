@@ -1,85 +1,80 @@
 <!doctype html>
-<html lang="bn">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Itinerary PDF Generator</title>
+  <title>Travel Itinerary PDF Generator</title>
+
   <link rel="stylesheet" href="style.css" />
 
-  <!-- PDF libs -->
+  <!-- jsPDF -->
   <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
 
   <script defer src="script.js"></script>
 </head>
 <body>
-  <header class="wrap">
-    <h1>Travel Itinerary PDF Generator</h1>
-    <p class="note">এটি একটি <b>Itinerary / Booking Summary (Sample)</b> PDF তৈরি করে।</p>
-  </header>
 
-  <main class="wrap grid">
-    <section class="card">
-      <h2>Passengers (max 5)</h2>
+<header class="wrap">
+  <h1>Travel Itinerary Generator</h1>
+  <p class="sub">Professional 2-Page Itinerary PDF</p>
+</header>
 
-      <div id="passengers"></div>
+<main class="wrap grid">
 
-      <div class="btnrow">
-        <button type="button" id="addPassengerBtn">+ Add Passenger</button>
-      </div>
+  <section class="card">
 
-      <hr class="sep"/>
+    <h2>Carrier Information</h2>
+    <label>
+      Carrier / Airline (text only)
+      <input id="carrier" placeholder="e.g., Thai Airways">
+    </label>
 
-      <h2>Trip Segments (Multi-City)</h2>
-      <p class="muted">Round Trip চাইলে 2টা segment দিন (Outbound + Return)।</p>
+    <hr>
 
-      <div id="segments"></div>
+    <h2>Passengers (max 5)</h2>
+    <div id="passengerBox"></div>
+    <button type="button" id="addPassengerBtn">+ Add Passenger</button>
 
-      <div class="btnrow">
-        <button type="button" id="addSegmentBtn">+ Add Segment</button>
-      </div>
+    <hr>
 
-      <hr class="sep"/>
+    <h2>Trip Segments (Multi-City)</h2>
+    <div id="segmentBox"></div>
+    <button type="button" id="addSegmentBtn">+ Add Segment</button>
 
-      <h2>Trip Summary</h2>
+    <hr>
+
+    <h2>Trip Summary</h2>
+
+    <div class="row">
       <label>
-  Carrier / Airline (text only)
-  <input id="carrier" placeholder="e.g., Thai Airways" />
-</label>
-      <div class="row">
-        <label>
-          Cabin
-          <select id="cabin">
-            <option>Economy</option>
-            <option>Premium Economy</option>
-            <option>Business</option>
-            <option>First</option>
-          </select>
-        </label>
-
-        <label>
-          Baggage
-          <input id="baggage" placeholder="e.g., 30kg" />
-        </label>
-      </div>
-
-      <label>
-        Notes (optional)
-        <input id="notes" placeholder="Any notes..." />
+        Cabin
+        <select id="cabin">
+          <option>Economy</option>
+          <option>Premium Economy</option>
+          <option>Business</option>
+          <option>First</option>
+        </select>
       </label>
 
-      <div class="btnrow">
-        <button type="button" id="generatePdfBtn" class="primary">Generate PDF (2 pages)</button>
-      </div>
-    </section>
+      <label>
+        Baggage
+        <input id="baggage" placeholder="30kg">
+      </label>
+    </div>
 
-    <section class="card">
-      <h2>Preview (quick)</h2>
-      <div class="preview" id="previewBox">
-        <div class="preview-title">Preview will appear here</div>
-        <div class="preview-sub">Add passengers & segments, then generate PDF.</div>
-      </div>
-    </section>
-  </main>
+    <label>
+      Notes
+      <input id="notes" placeholder="Optional notes...">
+    </label>
+
+    <button id="generateBtn" class="primary">
+      Generate 2-Page PDF
+    </button>
+
+  </section>
+
+</main>
+
 </body>
 </html>
