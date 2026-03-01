@@ -1,78 +1,66 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Travel Itinerary PDF Generator</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visa A2Z Itinerary Generator</title>
 
-  <link rel="stylesheet" href="style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
-  <!-- jsPDF -->
-  <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+<link rel="stylesheet" href="style.css">
 
-  <script defer src="script.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+<script defer src="script.js"></script>
 </head>
+
 <body>
 
-<header class="wrap">
-  <h1>Travel Itinerary Generator</h1>
-  <p class="sub">Professional 2-Page Itinerary PDF</p>
+<header class="wrap header">
+  <div class="brand">Visa A2Z</div>
+  <h1 class="title">Travel Itinerary Generator</h1>
+  <p class="subtitle">Professional Single Page PDF</p>
 </header>
 
-<main class="wrap grid">
+<main class="wrap card">
 
-  <section class="card">
+  <h2>Carrier</h2>
+  <input id="carrier" placeholder="e.g., Thai Airways">
 
-    <h2>Carrier Information</h2>
-    <label>
-      Carrier / Airline (text only)
-      <input id="carrier" placeholder="e.g., Thai Airways">
-    </label>
+  <hr>
 
-    <hr>
+  <h2>Passengers (max 5)</h2>
+  <div id="passengerBox"></div>
+  <button id="addPassenger">+ Add Passenger</button>
 
-    <h2>Passengers (max 5)</h2>
-    <div id="passengerBox"></div>
-    <button type="button" id="addPassengerBtn">+ Add Passenger</button>
+  <hr>
 
-    <hr>
+  <h2>Trip Segments</h2>
+  <div id="segmentBox"></div>
+  <button id="addSegment">+ Add Segment</button>
 
-    <h2>Trip Segments (Multi-City)</h2>
-    <div id="segmentBox"></div>
-    <button type="button" id="addSegmentBtn">+ Add Segment</button>
+  <hr>
 
-    <hr>
-
-    <h2>Trip Summary</h2>
-
-    <div class="row">
-      <label>
-        Cabin
-        <select id="cabin">
-          <option>Economy</option>
-          <option>Premium Economy</option>
-          <option>Business</option>
-          <option>First</option>
-        </select>
-      </label>
-
-      <label>
-        Baggage
-        <input id="baggage" placeholder="30kg">
-      </label>
+  <div class="row">
+    <div>
+      <label>Cabin</label>
+      <select id="cabin">
+        <option>Economy</option>
+        <option>Premium Economy</option>
+        <option>Business</option>
+        <option>First</option>
+      </select>
     </div>
+    <div>
+      <label>Baggage</label>
+      <input id="baggage" placeholder="30kg">
+    </div>
+  </div>
 
-    <label>
-      Notes
-      <input id="notes" placeholder="Optional notes...">
-    </label>
+  <label>Notes</label>
+  <input id="notes" placeholder="Optional notes">
 
-    <button id="generateBtn" class="primary">
-      Generate 2-Page PDF
-    </button>
-
-  </section>
+  <button id="generate" class="primary">Generate PDF</button>
 
 </main>
 
